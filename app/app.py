@@ -9,9 +9,12 @@ rq = RQ(app)
 
 @rq.job
 def add():
-    res = requests.post("http://0.0.0.0:8080/test")
+    res = requests.post("http://172.18.0.2:8080/test")
     if res.status_code == 200:
-        print(res.json())
+        print(res.text)
+        with open("ggout.txt", "a") as f:
+            f.write(res.text+"\n")
+        return res.json()
 
 @app.route('/', methods=['GET'])
 def index():

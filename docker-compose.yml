@@ -3,16 +3,28 @@ version: '3'
 services:
     web:
         build: ./app
+        networks:
+            - web_server
         image: master-image
+        depends_on:
+            - worker
         ports:
             - 5000:5000
-        command: /usr/local/bin/gunicorn -b :5000 main:app
+        command: flask run --host 0.0.0.0
 
     worker:
+        networks:
+            - web_server
         image: master-image
         depends_on:
             - redis
         command: rqworker --name worker --url redis://redis:6379/0
 
     redis:
+        networks:
+            - web_server
         image: redis
+
+networks:
+    web_server:
+        external: true
