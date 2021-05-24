@@ -9,7 +9,7 @@ rq = RQ(app)
 
 @rq.job
 def add():
-    res = requests.post("http://172.18.0.2:8080/test")
+    res = requests.post("http://172.18.0.2:8080/test")  # Ip from external docker network
     if res.status_code == 200:
         print(res.text)
         with open("ggout.txt", "a") as f:
